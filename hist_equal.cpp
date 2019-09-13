@@ -80,8 +80,8 @@ void *hist_equal_partial(void *limits) {
     Limits_extended *l = static_cast<Limits_extended *>(limits);
 
     // run the loop for changing the image into a hist_equalized version
-    for (int i = 0; i < l->img->dst.cols; i++)
-        for (int j = l->start; j < l->end; j++)
+    for (int i = l->start; i < l->end; i++)
+        for (int j = 0; j < l->img->dat_src.cols; j++)
             l->img->dst.at<uchar>(i, j) = l->img->hist[l->img->dat_src.at<uchar>(i, j)];
 }
 
@@ -114,12 +114,12 @@ void Image::histogram_equalize_multithreaded(int noThreads) {
     he_compute();
 
     // Thread Arithmetic
-    if (dat_src.cols < noThreads)
-        noThreads = dat_src.cols;
+    if (dat_src.rows < noThreads)
+        noThreads = dat_src.rows;
 
     pthread_t Thread[noThreads]; // array of threads
 
-    int step = dat_src.cols / noThreads;
+    int step = (dat_src.rows + noThreads - 1) / noThreads;
     int s, e;
 
     cout << "\n\nDimensions:\nrows = " << dat_src.rows << endl;
@@ -128,9 +128,8 @@ void Image::histogram_equalize_multithreaded(int noThreads) {
     clock_t startTime = clock();
     for (int i = 0; i < noThreads; i++) {
         s = (i * step);
-
-        if (i == noThreads) e = dat_src.cols;
-        else e = s + step;
+        e = s + step;
+        e = min(e, dat_src.rows);
 
         cout << "Thread No: " << i << "\tstart = " << s << "\t end = " << e << endl;
         pthread_create(&Thread[i], NULL, hist_equal_partial, (new Limits_extended(s, e, this)));

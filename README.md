@@ -1,4 +1,4 @@
-Just build with CMake, all credits to [multithreaded-histogram-equalization-cpp](https://github.com/akanimax/multithreaded-histogram-equalization-cpp) 
+Just build with CMake and fix the order mismatch i.e. [#1](https://github.com/akanimax/multithreaded-histogram-equalization-cpp/issues/1), all credits to [multithreaded-histogram-equalization-cpp](https://github.com/akanimax/multithreaded-histogram-equalization-cpp) 
 
 ---
 # multithreaded-histogram-equalization-cpp
