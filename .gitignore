@@ -1,6 +1,10 @@
 # ignore the Report directory
 Report
 
+# ignore clion build & config
+cmake-build-debug
+.idea
+
 # Prerequisites
 *.d
 
